@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ofxOpenCv.h"
 #include "ofxSocketIO.h"
+#include "ofxSocketIOData.h"
 
 class ofApp : public ofBaseApp {
     public:
@@ -22,12 +23,13 @@ class ofApp : public ofBaseApp {
 
         ofxSocketIO socketIO;
         bool isConnected;
+        std::string roomdb_uri;
+        std::string status;
+
         void onConnection();
         void bindEvents();
-        ofEvent<ofxSocketIOData&> serverEvent;
-        ofEvent<ofxSocketIOData&> pingEvent;
-        ofEvent<ofxSocketIOData&> nspingEvent;
-        std::string address;std::string status;
+        void gotEvent(std::string& name);
 
-        std::string roomdb_uri;
+        ofEvent<ofxSocketIOData&> assertEvent;
+        void onAssertEvent(ofxSocketIOData& data);
 };
