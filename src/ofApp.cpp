@@ -13,6 +13,8 @@ void ofApp::setup() {
       roomdb_uri = "http://localhost:3000";
     }
 
+    ofLog() << "roomdb_uri is " << roomdb_uri << std::endl;
+
     socketIO.setup(roomdb_uri);
     ofAddListener(socketIO.notifyEvent, this, &ofApp::gotEvent);
     ofAddListener(socketIO.connectionEvent, this, &ofApp::onConnection);
@@ -47,7 +49,6 @@ void ofApp::onConnection () {
 }
 
 void ofApp::update(){
-
     movie.update();
 
     if (movie.isFrameNew()) {
@@ -57,6 +58,10 @@ void ofApp::update(){
 
         //mirror horizontal
         rgb.mirror(false, true);
+
+	for (int i = 0; i < width*height; i++){
+            rgb.getPixels()[i] = rgb.getPixels()[i] > 0x01000000 ? 0 : 255;
+	}
 
         hsb = rgb; // copy rgb
 
@@ -72,7 +77,7 @@ void ofApp::update(){
 
         filtered.flagImageChanged();
         //run the contour finder on the filtered image to find blobs with a certain hue
-        contours.findContours(filtered, 50, width*height/2, 5, false);
+        contours.findContours(filtered, 25, width*height/100, 12, false);
 
         sendContours();
     }
@@ -127,7 +132,7 @@ void ofApp::gotEvent (string& name) {
 
 void ofApp::onAssertEvent (ofxSocketIOData& data) {
     auto result = data.getVector();
-    for (int i = 0; i < result.size(); i++) {
+    for (uint8_t i = 0; i < result.size(); i++) {
       ofLogNotice("ofxSocketIO", ofToString(result[i]));
     }
 }
