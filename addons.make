@@ -1,2 +1,3 @@
+ofxBonjour
 ofxOpenCv
-ofxSocketIO
+ofxOsc
