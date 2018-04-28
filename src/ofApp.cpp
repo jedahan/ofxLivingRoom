@@ -40,9 +40,13 @@ void ofApp::setup() {
     bri.allocate(width, height);
     filtered.allocate(width, height);
     
-    receiver.setup();
+    _name = "";
+    _type = "";
+    _host = "";
+    _port = 0;
+    
     browser.setup();
-    browser.setFoundNotificationReceiver(&receiver);
+    browser.setFoundNotificationReceiver(this);
     browser.startBrowse("_osc._tcp,livingroom");
 }
 
@@ -55,14 +59,7 @@ string string_format( const std::string& format, Args ... args )
     return string( buf.get(), buf.get() + size - 1 ); // We don't want the '\0' inside
 }
 
-void ofApp::setup() {
-    _name = "";
-    _type = "";
-    _host = "";
-    _port = 0;
-}
-
-void ofApp::foundService(const string &type, const string &name, const string &ip, const string &domain) {
+void ofApp::foundService(const string &type, const string &name, const string &ip, const string &domain, const int port) {
     _name = name;
     _type = type;
     _host = ip;
@@ -161,10 +158,10 @@ void ofApp::draw(){
     
     std::string debug = string_format("%d -> %d, %d", smallest, largest, findHue);
     ofDrawBitmapStringHighlight(debug, width * 0.8, height * 0.8);
-    if (receiver.found()) {
+    if (found()) {
         //std::string mdns = string_format("%s :// %s : %d", type, host, port);
-        ofDrawBitmapStringHighlight(receiver.host, width * 0.8, height * 0.9);
-        ofDrawBitmapStringHighlight(ofToString(receiver.port), width * 0.9, height * 0.9);
+        ofDrawBitmapStringHighlight(_host, width * 0.8, height * 0.9);
+        ofDrawBitmapStringHighlight(ofToString(_port), width * 0.9, height * 0.9);
     }
 }
 

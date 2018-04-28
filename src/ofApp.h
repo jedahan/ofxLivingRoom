@@ -41,7 +41,7 @@ class ofApp : public ofBaseApp, public ofxBonjourBrowserFoundNotificationReceive
         std::string _host;
     
         bool found();
-        void foundService(const string &type, const string &name, const string &ip, const string &domain);
+        void foundService(const string &type, const string &name, const string &ip, const string &domain, const int port);
     
     private:
         ofxBonjourBrowser browser;
