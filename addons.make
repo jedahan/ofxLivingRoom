@@ -1,3 +1,1 @@
 ofxBonjour
-ofxOpenCv
-ofxOsc

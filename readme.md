@@ -1,3 +1,5 @@
-Expects a roomdb osc server at localhost:41234
+depends on [ofxBonjour](https://github.com/2bbb/ofxBonjour)
 
-You can export `ROOMDB_HOST` and `ROOMDB_PORT` to change the location
+only works on macOS for now, sorry
+
+you will need to add CFNetworks framework from xcode build settings
