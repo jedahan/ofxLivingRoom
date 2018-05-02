@@ -1,1 +1,2 @@
 ofxBonjour
+ofxOsc

@@ -8,14 +8,17 @@ void ofxLivingRoom::setup() {
 
     browser.setup();
     browser.setFoundNotificationReceiver(this);
-    browser.startBrowse("_livingroom._sub._osc._udp");
+    _receiver.setup(1234);
+    browser.startBrowse("_livingroom._udp"); // works
+    // browser.startBrowse("_osc._udp"); // nope
 }
 
-void ofxLivingRoom::foundService(const string &type, const string &name, const string &ip, const string &domain, const int port) {
+void ofxLivingRoom::foundService(const std::string &type, const std::string &name, const std::string &ip, const std::string &domain, const int port) {
     _name = name;
     _type = type;
     _host = ip;
     _port = port;
+    _sender.setup(_host, _port);
     ofLog() << "Found Device: " << type << ", " << name << "@" << ip << " in " << domain;
 }
 
@@ -23,12 +26,25 @@ bool ofxLivingRoom::found() {
     return !(_name.empty() || _type.empty() || _port == 0);
 }
 
+std::string ofxLivingRoom::getLatest() {
+    return _name + "://" + _host + ":" + ofToString(_port) + " (" + _type + ")";
+}
+
+void ofxLivingRoom::getFacts(const string &fact) {
+    if (!found()) return;
+    ofxOscMessage m;
+    m.setAddress("/facts");
+    _sender.sendMessage(m, false);
+}
+
+void ofxLivingRoom::assertFact(const string &fact) {
+    if (!found()) return;
+    ofxOscMessage m;
+    m.setAddress("/assert");
+    m.addStringArg(fact);
+    _sender.sendMessage(m, false);
+}
+
 void ofxLivingRoom::draw() {
-    ofSetColor(255, 0, 0);
-    ofFill();
     
-    //std::string mdns = string_format("%s :// %s : %d", type, host, port);
-    ofDrawBitmapStringHighlight(_host, width * 0.2, height * 0.4);
-    ofDrawBitmapStringHighlight(_type, width * 0.2, height * 0.5);
-    ofDrawBitmapStringHighlight(ofToString(_port), width * 0.2, height * 0.6);
 }
