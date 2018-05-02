@@ -1,2 +1,2 @@
 ofxBonjour
-ofxLivingRoom
+ofxOsc

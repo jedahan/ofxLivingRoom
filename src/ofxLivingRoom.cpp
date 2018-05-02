@@ -9,8 +9,7 @@ void ofxLivingRoom::setup() {
     browser.setup();
     browser.setFoundNotificationReceiver(this);
     _receiver.setup(1234);
-    browser.startBrowse("_livingroom._udp"); // works
-    // browser.startBrowse("_osc._udp"); // nope
+    browser.startBrowse("_livingroom._osc._udp");
 }
 
 void ofxLivingRoom::foundService(const std::string &type, const std::string &name, const std::string &ip, const std::string &domain, const int port) {
